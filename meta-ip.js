@@ -1,4 +1,4 @@
-let data; // Declare the data variable with global scope
+let data;
 let githubNetworks = [];
 
 class IPSubnet {
@@ -58,11 +58,10 @@ function fetchJSON(url) {
 
 // Example usage:
 const url = 'https://api.github.com/meta';
-fetchJSON(url).then(() => {
-    if (data) {
-        console.log('Fetched JSON');
-    }
-})
+fetchJSON(url);
+if (data) {
+    console.log('Fetched JSON');
+}
 
 ignored_keys = ["verifiable_password_authentication", "ssh_key_fingerprints", "ssh_keys", "domains"];
 for (const key in data){
