@@ -1,9 +1,9 @@
 let data;
 let githubNetworks = [];
 
-$.ajaxSetup({
-    async: false
-});
+//$.ajaxSetup({
+//    async: false
+//});
 
 class IPSubnet {
     constructor(cidr, service) {
