@@ -44,24 +44,24 @@ class IPSubnet {
     }
 }
 
-function fetchJSON(url) {
+async function fetchJSON(url) {
     try {
-        const response = fetch(url);
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        data = response.json(); // Assign the fetched JSON to the global data variable
+        data = await response.json();
     } catch (error) {
         console.error('Error fetching JSON:', error);
     }
 }
 
-// Example usage:
 const url = 'https://api.github.com/meta';
-fetchJSON(url);
-if (data) {
-    console.log('Fetched JSON');
-}
+fetchJSON(url).then(() => {
+    if (data) {
+        console.log('Fetched JSON');
+    }
+})
 
 ignored_keys = ["verifiable_password_authentication", "ssh_key_fingerprints", "ssh_keys", "domains"];
 for (const key in data){
