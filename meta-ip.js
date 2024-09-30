@@ -1,4 +1,4 @@
-let data;
+let data; // Declare the data variable with global scope
 let githubNetworks = [];
 
 class IPSubnet {
@@ -44,18 +44,19 @@ class IPSubnet {
     }
 }
 
-async function fetchJSON(url) {
+function fetchJSON(url) {
     try {
-        const response = await fetch(url);
+        const response = fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        data = await response.json(); // Assign the fetched JSON to the global data variable
+        data = response.json(); // Assign the fetched JSON to the global data variable
     } catch (error) {
         console.error('Error fetching JSON:', error);
     }
 }
 
+// Example usage:
 const url = 'https://api.github.com/meta';
 fetchJSON(url).then(() => {
     if (data) {
