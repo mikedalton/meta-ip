@@ -1,6 +1,10 @@
 let data;
 let githubNetworks = [];
 
+$.ajaxSetup({
+    async: false
+});
+
 class IPSubnet {
     constructor(cidr, service) {
         this.cidr = cidr;
@@ -44,24 +48,8 @@ class IPSubnet {
     }
 }
 
-async function fetchJSON(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        data = await response.json();
-    } catch (error) {
-        console.error('Error fetching JSON:', error);
-    }
-}
-
 const url = 'https://api.github.com/meta';
-fetchJSON(url).then(() => {
-    if (data) {
-        console.log('Fetched JSON');
-    }
-})
+$.getJSON(url,data)
 
 ignored_keys = ["verifiable_password_authentication", "ssh_key_fingerprints", "ssh_keys", "domains"];
 for (const key in data){
