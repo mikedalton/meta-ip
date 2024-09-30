@@ -49,7 +49,9 @@ class IPSubnet {
 }
 
 const url = 'https://api.github.com/meta';
-$.getJSON(url,data)
+$.getJSON(url, function(json) {
+  data = json;
+});
 
 ignored_keys = ["verifiable_password_authentication", "ssh_key_fingerprints", "ssh_keys", "domains"];
 for (const key in data){
