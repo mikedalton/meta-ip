@@ -61,7 +61,7 @@ fetchJSON(url).then(() => {
     if (data) {
         console.log('Fetched JSON');
     }
-});
+})
 
 ignored_keys = ["verifiable_password_authentication", "ssh_key_fingerprints", "ssh_keys", "domains"];
 for (const key in data){
