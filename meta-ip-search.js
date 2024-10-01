@@ -66,15 +66,3 @@ $.getJSON(url, function(json) {
     console.log(githubNetworks.length)
 });
 
-ignored_keys = ["verifiable_password_authentication", "ssh_key_fingerprints", "ssh_keys", "domains"];
-for (const key in data){
-    if(!ignored_keys.includes(key)){
-        networks = data[key]
-        console.log(`${key}`)
-        for(network in networks){
-            //console.log(networks[network])
-            networkObject = new IPSubnet(networks[network],key)
-            githubNetworks.push(networkObject)
-        }
-    }
-}
