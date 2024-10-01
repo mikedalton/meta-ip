@@ -13,7 +13,7 @@
     <div class="search-container">
         <h1>GitHub Meta IP Search</h1>
         <input type="text" id="search-input" placeholder="Enter IP to search for">
-        <button id="search-button">Search</button>
+        <button id="search-button" onclick="getResults()">Search</button>
     </div>
     <div class="status-container" id="status-container">
         <!-- Status messages will be displayed here -->
@@ -31,35 +31,46 @@
             </tbody>
         </table>
     </div>
+    <div class="about-container" id="about-container">
+      <p>This utility operates entirely in the browser, and no data of any kind is submitted to any service or stored anywhere.<br/>
+        It loads the IP ranges from the latest version of <a href="https://api.github.com/meta" target="_blank">GitHub API's meta endpoint</a> as referenced in documentation <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-githubs-ip-addresses" target="_blank">about GitHub's IP addresses</a>, and then calculates whether or not the searched IP falls in any of those ranges.</p>
+    </div>
 
     <script>
-      document.getElementById('search-button').addEventListener('click', function() {
-          const searchTerm = document.getElementById('search-input').value;
-          const statusContainer = document.getElementById('status-container');
-          const resultsTableBody = document.getElementById('results-table').getElementsByTagName('tbody')[0];
+      function getResults() {
+        const searchTerm = document.getElementById('search-input').value;
+        const statusContainer = document.getElementById('status-container');
+        const resultsTableBody = document.getElementById('results-table').getElementsByTagName('tbody')[0];
 
-          // Clear previous results
-          resultsTableBody.innerHTML = '';
+        resultsTableBody.innerHTML = '';
 
-          // Show status message
-          $("#status-container").text('Searching...');
+        $("#status-container").text('Searching...');
 
-          results = searchIP(searchTerm);
+        results = searchIP(searchTerm);
 
-          $("#status-container").text(`Found ${results.length} results`);
-          results.forEach(result => {
-              const row = document.createElement('tr');
-              const cidrCell = document.createElement('td');
-              const serviceCell = document.createElement('td');
+        $("#status-container").text(`Found ${results.length} results`);
+        results.forEach(result => {
+            const row = document.createElement('tr');
+            const cidrCell = document.createElement('td');
+            const serviceCell = document.createElement('td');
 
-              cidrCell.innerText = result.cidr;
-              serviceCell.innerText = result.service;
+            cidrCell.innerText = result.cidr;
+            serviceCell.innerText = result.service;
 
-              row.appendChild(cidrCell);
-              row.appendChild(serviceCell);
-              resultsTableBody.appendChild(row);
-          });
-      });
+            row.appendChild(cidrCell);
+            row.appendChild(serviceCell);
+            resultsTableBody.appendChild(row);
+        })
+    };
+
+    $("#search-input").keypress(function(e) {
+        if(e.which == 13) {
+            getResults();
+        }
+    });
+    $("#search-button").click(function(){
+      getResults();
+    });
     </script>
 </body>
 </html>

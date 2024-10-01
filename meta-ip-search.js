@@ -64,7 +64,6 @@ $(document).ready(function(){
             if(!ignored_keys.includes(key)){
                 networks = data[key];
                 for(network in networks){
-                    //console.log(networks[network])
                     networkObject = new IPSubnet(networks[network],key);
                     githubNetworks.push(networkObject);
                 }
