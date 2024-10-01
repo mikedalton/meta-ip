@@ -1,11 +1,65 @@
-<html>
-  <head>
-    <title>Hello</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.github.com/meta">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' 'self' https://api.github.com/meta">
+    <link rel="stylesheet" href="meta-ip-search.css">
     <script type="text/javascript" src="jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="meta-ip-search.js"></script>
-  </head>
-  <body>
-    Hello, HTML world!
-  </body>
+    <title>GitHub Meta IP Search</title>
+</head>
+<body>
+    <div class="search-container">
+        <h1>GitHub Meta IP Search</h1>
+        <input type="text" id="search-input" placeholder="Enter IP to search for">
+        <button id="search-button">Search</button>
+    </div>
+    <div class="status-container" id="status-container">
+        <!-- Status messages will be displayed here -->
+    </div>
+    <div class="results-container" id="results-container">
+        <table class="results-table" id="results-table">
+            <thead>
+                <tr>
+                    <th>CIDR</th>
+                    <th>Service</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Search results will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+      document.getElementById('search-button').addEventListener('click', function() {
+          const searchTerm = document.getElementById('search-input').value;
+          const statusContainer = document.getElementById('status-container');
+          const resultsTableBody = document.getElementById('results-table').getElementsByTagName('tbody')[0];
+
+          // Clear previous results
+          resultsTableBody.innerHTML = '';
+
+          // Show status message
+          $("#status-container").text('Searching...');
+
+          results = searchIP(searchTerm);
+
+          $("#status-container").text(`Found ${results.length} results`);
+          results.forEach(result => {
+              const row = document.createElement('tr');
+              const cidrCell = document.createElement('td');
+              const serviceCell = document.createElement('td');
+
+              cidrCell.innerText = result.cidr;
+              serviceCell.innerText = result.service;
+
+              row.appendChild(cidrCell);
+              row.appendChild(serviceCell);
+              resultsTableBody.appendChild(row);
+          });
+      });
+    </script>
+</body>
 </html>

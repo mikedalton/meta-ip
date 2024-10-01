@@ -1,9 +1,6 @@
 let data;
 let githubNetworks = [];
-
-$.ajaxSetup({
-    async: false
-});
+const url = 'https://api.github.com/meta';
 
 class IPSubnet {
     constructor(cidr, service) {
@@ -48,21 +45,31 @@ class IPSubnet {
     }
 }
 
-const url = 'https://api.github.com/meta';
-$.getJSON(url, function(json) {
-    data = json;
-    ignored_keys = ["verifiable_password_authentication", "ssh_key_fingerprints", "ssh_keys", "domains"];
-    for (const key in data){
-        if(!ignored_keys.includes(key)){
-            networks = data[key]
-            console.log(`${key}`)
-            for(network in networks){
-                //console.log(networks[network])
-                networkObject = new IPSubnet(networks[network],key)
-                githubNetworks.push(networkObject)
-            }
+function searchIP(ip) {
+    const result = [];
+    for (const network of githubNetworks) {
+        if (network.isInSubnet(ip)) {
+            result.push(network);
         }
     }
-    console.log(githubNetworks.length)
-});
+    return result;
+}
 
+$(document).ready(function(){
+    $("#status-container").text("Fetching data from GitHub API...");
+    $.getJSON(url, function(json) {
+        data = json;
+        ignored_keys = ["verifiable_password_authentication", "ssh_key_fingerprints", "ssh_keys", "domains"];
+        for (const key in data){
+            if(!ignored_keys.includes(key)){
+                networks = data[key];
+                for(network in networks){
+                    //console.log(networks[network])
+                    networkObject = new IPSubnet(networks[network],key);
+                    githubNetworks.push(networkObject);
+                }
+            }
+        }
+        $("#status-container").text(`Loaded ${githubNetworks.length} IP ranges`);
+    });
+ });
